@@ -6,9 +6,51 @@ package chain_of_responsibility;
 // en uppsättning objekt som kan hantera en förfrågan, men inte på förhand
 // vet vilken som kommer att göra det.
 
-public class Logger {
+public abstract class Logger {
     // Denna abstrakta klass fungerar som basklass för olika specifika loggerklasser
     // (InfoLogger, DebugLogger, ErrorLogger).
     //Den innehåller de allmänna mekanismerna för att hantera meddelanden och
     // skicka dem vidare längs kedjan.
+
+    public static int INFO = 1;
+    public static int DEBUG = 2;
+    public static int ERROR = 3;
+
+    protected int level;
+
+    protected Logger nextLogger;
+
+    public void setNextLogger(Logger nextLogger) {
+        this.nextLogger = nextLogger;
+    }
+
+    public void logMessage(int level, String message) {
+        if (this.level == level) {
+            write(message);
+        } else if (nextLogger != null) {
+            nextLogger.logMessage(level, message);
+        }
+    }
+
+    abstract protected void write(String message);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
